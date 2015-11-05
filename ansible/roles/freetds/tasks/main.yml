@@ -1,0 +1,10 @@
+---
+- name: install
+  yum: name={{ item }} state=latest
+  with_items:
+    - freetds
+
+- name: configure freetds.conf
+  template:
+    src=freetds.conf.j2
+    dest=/etc/freetds.conf

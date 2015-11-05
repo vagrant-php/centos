@@ -1,0 +1,10 @@
+---
+- name: install core, dev
+  yum: name={{ item }} state=present
+  with_items:
+      - ruby
+      - ruby-devel
+
+- name: install gems
+  gem: name={{ item }} state=present user_install=no
+  with_items: ruby.gems

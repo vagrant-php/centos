@@ -1,0 +1,10 @@
+---
+- name: install
+  yum: name={{ item }} state=latest
+  with_items:
+    - git
+
+- name: copy .gitconfig
+  template:
+    src=gitconfig.j2
+    dest=/home/vagrant/.gitconfig
