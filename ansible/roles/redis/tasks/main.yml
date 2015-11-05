@@ -1,12 +1,12 @@
 ---
 - name: install
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
-    - redis-server
+    - redis
 
 - name: configure redis.conf
   template:
     src=redis.conf.j2
-    dest=/etc/redis/redis.conf
+    dest=/etc/redis.conf
   notify:
       - restart redis
