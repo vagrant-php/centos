@@ -10,7 +10,7 @@
     group=root
 
 - name: install
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   with_items:
     - elasticsearch
 
