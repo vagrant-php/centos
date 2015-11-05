@@ -1,8 +1,10 @@
-# vagrant-php/debian
+# vagrant-php/centos
+
+ATTENTION: this repository is far away from workiing atm, i will tweet about it, if its ready
 
 ## Features
 
- * debian 8
+ * centos 7
  * nginx 1.8
  * php (5.6-original, 7.0, hhvm)
 
