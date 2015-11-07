@@ -11,15 +11,8 @@
   with_items:
     - mongodb-org
 
-- name: configure mongod.conf
-  template:
-    src=mongod.conf.j2
-    dest=/etc/mongod.conf
-  notify:
-      - restart mongodb
-
-- name: wait for mongod
-  wait_for: port={{mongodb.config.net.port}}
+- name: start mongodb
+  service: name=mongod state=started
 
 - name: copy user script
   template:
@@ -44,3 +37,10 @@
     owner=vagrant
     group=vagrant
     mode=0600
+
+- name: configure mongod.conf
+  template:
+    src=mongod.conf.j2
+    dest=/etc/mongod.conf
+  notify:
+      - restart mongodb
