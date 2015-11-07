@@ -32,7 +32,7 @@ ATTENTION: this repository is far away from workiing atm, i will tweet about it,
 
 ```{.sh}
 cd /path/to/my/project
-git submodule add -b 8 https://github.com/vagrant-php/debian.git vagrant-php
+git submodule add -b 7 https://github.com/vagrant-php/centos.git vagrant-php
 ```
 
 #### install
