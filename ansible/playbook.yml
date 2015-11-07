@@ -8,7 +8,7 @@
     - git
 #    - { role: hhvm, when: phpversion == 'hhvm' }
 #    - { role: mariadb, when: role.mariadb }
-#    - { role: memcached, when: role.memcached }
+    - { role: memcached, when: role.memcached }
     - { role: mongodb, when: role.mongodb }
 #    - { role: nginx-application-bolt2, when: application == 'bolt2' }
 #    - { role: nginx-application-contao3, when: application == 'contao3' }
