@@ -17,7 +17,7 @@
 #    - { role: nginx-application-symfony2, when: application == 'symfony2' }
 #    - { role: nginx-application-wordpress4, when: application == 'wordpress4' }
 #    - nginx
-#    - { role: nodejs, when: role.nodejs }
+    - { role: nodejs, when: role.nodejs }
 #    - { role: php56-original, when: phpversion == '5.6-original' }
 #    - { role: php70, when: phpversion == 7.0 }
 #    - php-tools

@@ -1,17 +1,16 @@
 ---
-- name: add apt key
-  apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
-
-- name: add apt repository
-  apt_repository: repo='deb https://deb.nodesource.com/node_0.12 jessie main' state=present
-
-- name: add apt src repository
-  apt_repository: repo='deb-src https://deb.nodesource.com/node_0.12 jessie main' state=present
+- name: yum repository
+  copy:
+    src=nodejs-0.12.repo
+    dest=/etc/yum.repos.d/nodejs-0.12.repo
+    owner=root
+    group=root
 
 - name: install
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
     - nodejs
+    - nodejs-devel
 
 - name: npm install
   npm: name={{ item }} global=yes state=present

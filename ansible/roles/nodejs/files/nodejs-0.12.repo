@@ -1,0 +1,5 @@
+[nodejs-0.12.repo]
+name=Node JS Repository
+baseurl=https://rpm.nodesource.com/pub_0.12/el/$releasever/x86_64/
+gpgcheck=0
+enabled=1
