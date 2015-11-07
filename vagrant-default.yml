@@ -253,10 +253,10 @@ postgresql:
     username: root
     password: root
     config:
-        data_directory: /var/lib/postgresql/9.4/main
+        data_directory: /var/lib/pgsql/9.4/data
         external_pid_file: /var/run/postgresql/9.4-main.pid
-        hba_file: /etc/postgresql/9.4/main/pg_hba.conf
-        ident_file: /etc/postgresql/9.4/main/pg_ident.conf
+        hba_file: /var/lib/pgsql/9.4/data/pg_hba.conf
+        ident_file: /var/lib/pgsql/9.4/data/pg_ident.conf
         lc_messages: *locale
         lc_monetary: *locale
         lc_numeric: *locale
