@@ -1,26 +1,20 @@
 ---
-- name: add key
-  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db state=present
-
-- name: app repository
-  apt_repository: repo='deb http://mirror2.hs-esslingen.de/mariadb/repo/10.0/debian jessie main' state=present
+- name: yum repository
+  copy:
+    src=MariaDB.repo
+    dest=/etc/yum.repos.d/MariaDB.repo
+    owner=root
+    group=root
 
 - name: install
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
-    - mariadb-server
-    - mariadb-client
-    - python-mysqldb
+    - MariaDB-server
+    - MariaDB-client
+    - MySQL-python
 
-- name: configure my.cnf
-  template:
-    src=my.cnf.j2
-    dest=/etc/mysql/my.cnf
-  notify:
-      - restart mysql
-
-- name: wait for mariadb
-  wait_for: port={{mariadb.config.mysqld.port}}
+- name: start mariadb
+  service: name=mysql state=started
 
 - name: change default user to {{ mariadb.username }} / {{ mariadb.password }}
   mysql_user: name={{ mariadb.username }} password={{ mariadb.password }} host=localhost login_unix_socket={{ mariadb.config.mysqld.socket }}
@@ -40,3 +34,10 @@
     owner=vagrant
     group=vagrant
     mode=0600
+
+- name: configure my.cnf
+  template:
+    src=my.cnf.j2
+    dest=/etc/my.cnf
+  notify:
+      - restart mysql
