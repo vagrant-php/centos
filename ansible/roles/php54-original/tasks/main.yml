@@ -20,7 +20,7 @@
 - name: install mongo
   yum: name={{ item }} state=present
   with_items:
-    - php-mongo
+    - php-pecl-mongo
   notify:
     - restart php54-original-fpm
   when: role.mongodb
