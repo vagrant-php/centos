@@ -1,73 +1,108 @@
 ---
-- name: add key
-  apt_key: keyserver=keyserver.ubuntu.com id=89DF5277 state=present
-
-- name: app repository
-  apt_repository: repo='deb http://dotdeb.netmirror.org jessie all' state=present
-
-- name: app src repository
-  apt_repository: repo='deb-src http://dotdeb.netmirror.org jessie all' state=present
-
+- name: yum repository
+  copy:
+    src=php.repo
+    dest=/etc/yum.repos.d/php.repo
+    owner=root
+    group=root
+    
 - name: install core, common, cli, fpm
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
-    - php7.0
-    - php7.0-common
-    - php7.0-cli
-    - php7.0-fpm
+    - php70
+    - php70-php-common
+    - php70-php-cli
+    - php70-php-fpm
   notify:
-    - restart php7.0-fpm
+    - restart php70-php-fpm
 
-- name: install mysql
-  apt: name={{ item }} state=present
+- name: install memcached
+  yum: name={{ item }} state=present
   with_items:
-    - php-mysql
+    - php70-php-pecl-memcached
   notify:
-    - restart php7.0-fpm
+    - restart php70-php-fpm
+  when: role.memcached
+
+#- name: install mongo
+#  yum: name={{ item }} state=present
+#  with_items:
+#    - php70-php-pecl-mongo
+#  notify:
+#    - restart php70-php-fpm
+#  when: role.mongodb
+
+- name: install mysqlnd
+  yum: name={{ item }} state=present
+  with_items:
+    - php70-php-mysqlnd
+  notify:
+    - restart php70-php-fpm
   when: role.mariadb
 
 - name: install pgsql
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
-    - php-pgsql
+    - php70-php-pgsql
   notify:
-    - restart php7.0-fpm
+    - restart php70-php-fpm
   when: role.postgresql
 
-- name: install sybase
-  apt: name={{ item }} state=present
-  with_items:
-    - php-sybase
-  notify:
-    - restart php7.0-fpm
-  when: role.freetds
+#- name: install redis
+#  yum: name={{ item }} state=present
+#  with_items:
+#    - php70-php-pecl-redis
+#  notify:
+#    - restart php70-php-fpm
+#  when: role.redis
+
+#- name: install mssql
+#  yum: name={{ item }} state=present
+#  with_items:
+#    - php70-php-mssql
+#  notify:
+#    - restart php70-php-fpm
+#  when: role.freetds
 
 - name: install modules
-  apt: name={{ item }} state=present
-  with_items:
-    - php-curl
-    - php-gd
-    - php-intl
-    - php-opcache
-    - php-sqlite3
+  yum: name="php70-php-{{ php.modules|join(',php70-php-') }}" state=present
   notify:
-    - restart php7.0-fpm
-
-- name: configure cli php.ini
-  template:
-    src=cli.php.ini.j2
-    dest=/etc/php/7.0/cli/php.ini
+    - restart php70-php-fpm
 
 - name: configure fpm php.ini
   template:
-    src=fpm.php.ini.j2
-    dest=/etc/php/7.0/fpm/php.ini
+    src=php.ini.j2
+    dest=/etc/opt/remi/php70/php.ini
   notify:
-    - restart php7.0-fpm
+    - restart php70-php-fpm
 
 - name: fpm config
   template:
     src=php-fpm.conf.j2
-    dest=/etc/php/7.0/fpm/php-fpm.conf
+    dest=/etc/opt/remi/php70/php-fpm.conf
   notify:
-    - restart php7.0-fpm
+    - restart php70-php-fpm
+
+- name: link php binary
+  file:
+    src=/opt/remi/php70/root/bin/php
+    dest=/usr/bin/php
+    owner=root
+    group=root
+    state=link
+
+- name: link php-cgi binary
+  file:
+    src=/opt/remi/php70/root/bin/php-cgi
+    dest=/usr/bin/php-cgi
+    owner=root
+    group=root
+    state=link
+
+- name: link php-fpm binary
+  file:
+    src=/opt/remi/php70/root/sbin/php-fpm
+    dest=/usr/sbin/php-fpm
+    owner=root
+    group=root
+    state=link

@@ -22,7 +22,7 @@
     - { role: php54, when: phpversion == 5.4 }
     - { role: php55, when: phpversion == 5.5 }
     - { role: php56, when: phpversion == 5.6 }
-#    - { role: php70, when: phpversion == 7.0 }
+    - { role: php70, when: phpversion == 7.0 }
     - php-tools
     - { role: php-application-drupal7, when: application == 'drupal7' }
     - { role: php-application-symfony2, when: application == 'symfony2' }
