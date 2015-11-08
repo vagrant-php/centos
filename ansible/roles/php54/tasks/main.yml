@@ -1,0 +1,108 @@
+---
+- name: yum repository
+  copy:
+    src=php.repo
+    dest=/etc/yum.repos.d/php.repo
+    owner=root
+    group=root
+    
+- name: install core, common, cli, fpm
+  yum: name={{ item }} state=present
+  with_items:
+    - php54
+    - php54-php-common
+    - php54-php-cli
+    - php54-php-fpm
+  notify:
+    - restart php54-php-fpm
+
+- name: install memcached
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-pecl-memcached
+  notify:
+    - restart php54-php-fpm
+  when: role.memcached
+
+- name: install mongo
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-pecl-mongo
+  notify:
+    - restart php54-php-fpm
+  when: role.mongodb
+
+- name: install mysqlnd
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-mysqlnd
+  notify:
+    - restart php54-php-fpm
+  when: role.mariadb
+
+- name: install pgsql
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-pgsql
+  notify:
+    - restart php54-php-fpm
+  when: role.postgresql
+
+- name: install redis
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-pecl-redis
+  notify:
+    - restart php54-php-fpm
+  when: role.redis
+
+- name: install mssql
+  yum: name={{ item }} state=present
+  with_items:
+    - php54-php-mssql
+  notify:
+    - restart php54-php-fpm
+  when: role.freetds
+
+- name: install modules
+  yum: name="php54-php-{{ php.modules|join(',php54-php-') }}" state=present
+  notify:
+    - restart php54-php-fpm
+
+- name: configure fpm php.ini
+  template:
+    src=php.ini.j2
+    dest=/opt/remi/php54/root/etc/php.ini
+  notify:
+    - restart php54-php-fpm
+
+- name: fpm config
+  template:
+    src=php-fpm.conf.j2
+    dest=/opt/remi/php54/root/etc/php-fpm.conf
+  notify:
+    - restart php54-php-fpm
+
+- name: link php binary
+  file:
+    src=/opt/remi/php54/root/bin/php
+    dest=/usr/bin/php
+    owner=root
+    group=root
+    state=link
+
+- name: link php-cgi binary
+  file:
+    src=/opt/remi/php54/root/bin/php-cgi
+    dest=/usr/bin/php-cgi
+    owner=root
+    group=root
+    state=link
+
+- name: link php-fpm binary
+  file:
+    src=/opt/remi/php54/root/sbin/php-fpm
+    dest=/usr/sbin/php-fpm
+    owner=root
+    group=root
+    state=link

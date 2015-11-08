@@ -1,0 +1,5 @@
+[php]
+name=PHP Repository
+baseurl=http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/
+gpgcheck=0
+enabled=1
