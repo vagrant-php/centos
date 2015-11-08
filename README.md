@@ -6,7 +6,7 @@ ATTENTION: this repository is far away from workiing atm, i will tweet about it,
 
  * centos 7
  * nginx 1.8
- * php (5.6-original, 7.0, hhvm)
+ * php (5.4-original, 5.4, 5.5, 5.6, 7.0, hhvm)
 
 ## Switchable features
 
