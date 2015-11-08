@@ -13,6 +13,13 @@
     - MariaDB-client
     - MySQL-python
 
+- name: configure my.cnf
+  template:
+    src=my.cnf.j2
+    dest=/etc/my.cnf
+  notify:
+      - restart mysql
+
 - name: start mariadb
   service: name=mysql state=started
 
@@ -34,10 +41,3 @@
     owner=vagrant
     group=vagrant
     mode=0600
-
-- name: configure my.cnf
-  template:
-    src=my.cnf.j2
-    dest=/etc/my.cnf
-  notify:
-      - restart mysql

@@ -1,0 +1,69 @@
+---
+- name: install core, common, cli, fpm
+  yum: name={{ item }} state=present
+  with_items:
+    - php
+    - php-common
+    - php-cli
+    - php-fpm
+  notify:
+    - restart php54-original-fpm
+
+- name: install memcached
+  yum: name={{ item }} state=present
+  with_items:
+    - php-memcached
+  notify:
+    - restart php54-original-fpm
+  when: role.memcached
+
+- name: install mongo
+  yum: name={{ item }} state=present
+  with_items:
+    - php-mongo
+  notify:
+    - restart php54-original-fpm
+  when: role.mongodb
+
+- name: install mysqlnd
+  yum: name={{ item }} state=present
+  with_items:
+    - php-mysqlnd
+  notify:
+    - restart php54-original-fpm
+  when: role.mariadb
+
+- name: install pgsql
+  yum: name={{ item }} state=present
+  with_items:
+    - php-pgsql
+  notify:
+    - restart php54-original-fpm
+  when: role.postgresql
+
+- name: install redis
+  yum: name={{ item }} state=present
+  with_items:
+    - php-redis
+  notify:
+    - restart php54-original-fpm
+  when: role.redis
+
+- name: install modules
+  yum: name="php-{{ php.modules|join(',php-') }}" state=present
+  notify:
+    - restart php54-original-fpm
+
+- name: configure fpm php.ini
+  template:
+    src=php.ini.j2
+    dest=/etc/php.ini
+  notify:
+    - restart php54-original-fpm
+
+- name: fpm config
+  template:
+    src=php-fpm.conf.j2
+    dest=/etc/php-fpm.conf
+  notify:
+    - restart php54-original-fpm

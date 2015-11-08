@@ -1,17 +1,11 @@
 ---
-- name: add key
-  apt_key: keyserver=keyserver.ubuntu.com id=89DF5277 state=present
-
-- name: app repository
-  apt_repository: repo='deb http://dotdeb.netmirror.org jessie all' state=present
-
-- name: app src repository
-  apt_repository: repo='deb-src http://dotdeb.netmirror.org jessie all' state=present
+- name: install repository package
+  yum: name=http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm state=present
 
 - name: install
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
-    - nginx-light
+    - nginx
 
 - name: copy privatekey
   copy:

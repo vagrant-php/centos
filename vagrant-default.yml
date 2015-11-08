@@ -2,7 +2,7 @@
 hostname: projectname.dev
 application: ~
 sharetype: nfs
-phpversion: 5.6-original
+phpversion: 5.4-original
 memory: 1024
 
 nfsoptions:
@@ -110,7 +110,7 @@ hhvm:
             hhvm.libxml.ext_entity_whitelist: file,http
     server:
         log: /var/log/hhvm-server.log
-        socket: &phpserversocket /tmp/php-server-socket
+        socket: &phpserversocket /var/run/php-fcgi.sock
 
 mariadb:
     username: root
@@ -173,80 +173,49 @@ nodejs:
 
 php:
     config:
-        cli:
-            php:
-                short_open_tag: Off
-                safe_mode: Off
-                max_execution_time: 0
-                memory_limit: -1
-                error_reporting: E_ALL
-                display_errors: On
-                display_startup_errors: On
-                log_errors: On
-                error_log: /var/log/php-cli.err.log
-                magic_quotes_runtime: Off
-                default_charset: utf-8
-                allow_url_fopen: On
-                allow_url_include: Off
-            date:
-                date.timezone: *timezone
-            intl:
-                intl.default_locale: *locale
-            mysql:
-                mysql.default_port: *mariadbport
-                mysql.default_socket: *mariadbsocket
-            mysqli:
-                mysqli.default_port: *mariadbport
-                mysqli.default_socket: *mariadbsocket
-            pdo_mysql:
-                pdo_mysql.default_socket: *mariadbsocket
-            xdebug:
-                xdebug.max_nesting_level: 256
-        fpm:
-            php:
-                short_open_tag: Off
-                safe_mode: Off
-                max_execution_time: 600
-                max_input_time: 600
-                memory_limit: 256M
-                error_reporting: E_ALL
-                display_errors: On
-                display_startup_errors: On
-                log_errors: On
-                error_log: /var/log/php-fpm.err.log
-                post_max_size: 50M
-                magic_quotes_gpc: Off
-                magic_quotes_runtime: Off
-                default_charset: utf-8
-                cgi.fix_pathinfo: Off
-                upload_max_filesize: 50M
-                allow_url_fopen: On
-                allow_url_include: Off
-            date:
-                date.timezone: *timezone
-            intl:
-                intl.default_locale: *locale
-            mysql:
-                mysql.default_port: *mariadbport
-                mysql.default_socket: *mariadbsocket
-            mysqli:
-                mysqli.default_port: *mariadbport
-                mysqli.default_socket: *mariadbsocket
-            pdo_mysql:
-                pdo_mysql.default_socket: *mariadbsocket
-            xdebug:
-                xdebug.max_nesting_level: 256
+        php:
+            short_open_tag: Off
+            safe_mode: Off
+            max_execution_time: 600
+            max_input_time: 600
+            memory_limit: 256M
+            error_reporting: E_ALL
+            display_errors: On
+            display_startup_errors: On
+            log_errors: On
+            error_log: /var/log/php-fpm.err.log
+            post_max_size: 50M
+            magic_quotes_gpc: Off
+            magic_quotes_runtime: Off
+            default_charset: utf-8
+            cgi.fix_pathinfo: Off
+            upload_max_filesize: 50M
+            allow_url_fopen: On
+            allow_url_include: Off
+        date:
+            date.timezone: *timezone
+        intl:
+            intl.default_locale: *locale
+        mysql:
+            mysql.default_port: *mariadbport
+            mysql.default_socket: *mariadbsocket
+        mysqli:
+            mysqli.default_port: *mariadbport
+            mysqli.default_socket: *mariadbsocket
+        pdo_mysql:
+            pdo_mysql.default_socket: *mariadbsocket
+        xdebug:
+            xdebug.max_nesting_level: 256
     server:
         socket: *phpserversocket
 
     modules:
-        - apcu
-        - curl
+        - pecl-apcu
         - gd
-        - imagick
+        - pecl-imagick
+        - pecl-zendopcache
         - intl
         - mcrypt
-        - sqlite
         - xdebug
 
 postgresql:
