@@ -49,6 +49,14 @@
     - restart php54-original-fpm
   when: role.redis
 
+- name: install mssql
+  yum: name={{ item }} state=present
+  with_items:
+    - php-mssql
+  notify:
+    - restart php54-original-fpm
+  when: role.freetds
+
 - name: install modules
   yum: name="php-{{ php.modules|join(',php-') }}" state=present
   notify:
