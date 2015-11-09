@@ -22,7 +22,7 @@
 ### keymap
 
 - name: timezone | Set keymap to {{ general.config.keymap }}
-  command: localectl set-keyp {{ general.config.keymap }}
+  command: /usr/bin/localectl set-keymap {{ general.config.keymap }}
 
 ### bash
 
