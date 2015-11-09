@@ -19,6 +19,11 @@
 - name: timezone | Set /etc/localtime to {{ general.config.timezone }}
   command: /bin/cp /usr/share/zoneinfo/{{ general.config.timezone }} /etc/localtime
 
+### keymap
+
+- name: timezone | Set keymap to {{ general.config.keymap }}
+  command: localectl set-keyp {{ general.config.keymap }}
+
 ### bash
 
 - name: bash | copy .bash_vagrant for user vagrant

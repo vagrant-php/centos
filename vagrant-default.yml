@@ -51,6 +51,7 @@ general:
         history_length: 5000
         language: &language de_CH
         locale: &locale de_CH.UTF-8
+        keymap: ch-de_nodeadkeys
         timezone: &timezone Europe/Zurich
     packages:
         - gcc
