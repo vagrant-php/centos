@@ -216,6 +216,7 @@ php:
         - pecl-imagick
         - pecl-zendopcache
         - intl
+        - mbstring
         - mcrypt
         - xdebug
 
