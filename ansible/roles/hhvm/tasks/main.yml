@@ -1,72 +1,50 @@
 ---
-- name: add key
-  apt_key: keyserver=keyserver.ubuntu.com id=0x5a16e7281be7a449 state=present
-
-- name: app repository
-  apt_repository: repo='deb http://dl.hhvm.com/debian jessie main' state=present
+- name: yum repository
+  copy:
+    src=no1youknowz-hhvm.repo
+    dest=/etc/yum.repos.d/no1youknowz-hhvm.repo
+    owner=root
+    group=root
 
 - name: install
-  apt: name={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
     - hhvm
   notify:
     - restart hhvm
-    
-- name: link hhvm rc0.d
+
+- name: install pgsql
+  yum: name={{ item }} state=present
+  with_items:
+    - hhvm-ext-pgsql
+  notify:
+    - restart hhvm
+  when: role.postgresql
+
+- name: fix hhvm permission
   file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc0.d/K01hhvm
-    state=link
+    path=/usr/bin/hhvm
+    owner=vagrant
+    group=vagrant
 
-- name: link hhvm rc1.d
+- name: fix php-fcgi.sock permission
   file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc1.d/K01hhvm
-    state=link
+    path=/var/run/php-fcgi.sock
+    owner=vagrant
+    group=vagrant
 
-- name: link hhvm rc2.d
-  file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc2.d/S01hhvm
-    state=link
+- name: add hhvm.service
+  copy:
+    src=hhvm.service
+    dest=/usr/lib/systemd/system/hhvm.service
+    owner=root
+    group=root
 
-- name: link hhvm rc3.d
-  file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc3.d/S01hhvm
-    state=link
+- name: reload systemd daemon
+  command: /bin/systemctl daemon-reload
 
-- name: link hhvm rc4.d
-  file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc4.d/S01hhvm
-    state=link
-
-- name: link hhvm rc5.d
-  file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc5.d/S01hhvm
-    state=link
-
-- name: link hhvm rc6.d
-  file:
-    src=/etc/init.d/hhvm
-    dest=/etc/rc6.d/K01hhvm
-    state=link    
-
-- name: fix user in init script
-  lineinfile:
-    dest=/etc/init.d/hhvm
-    line='RUN_AS_USER="vagrant"'
-    regexp='^RUN_AS_USER\='
-    state=present
-
-- name: fix group in init script
-  lineinfile:
-    dest=/etc/init.d/hhvm
-    line='RUN_AS_GROUP="vagrant"'
-    regexp='^RUN_AS_GROUP\='
-    state=present
+- name: start hhvm on boot
+  service: name=hhvm enabled=yes
 
 - name: configure php.ini
   template:
@@ -81,3 +59,9 @@
     dest=/etc/hhvm/server.ini
   notify:
     - restart hhvm
+
+- name: link hhvm to php
+  file:
+    src=/usr/bin/hhvm
+    dest=/usr/bin/php
+    state=link

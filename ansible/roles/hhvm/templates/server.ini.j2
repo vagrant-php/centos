@@ -1,5 +1,5 @@
 ; php options
-pid = /var/run/hhvm/pid
+pid = /var/run/hhvm.pid
 
 ; hhvm specific
 hhvm.server.user = vagrant
@@ -7,4 +7,3 @@ hhvm.server.file_socket = {{ hhvm.server.socket }}
 hhvm.server.type = fastcgi
 hhvm.log.use_log_file = true
 hhvm.log.file = {{ hhvm.server.log }}
-hhvm.repo.central.path = /var/run/hhvm/hhvm.hhbc
