@@ -21,8 +21,8 @@
 
 ### keymap
 
-- name: timezone | Set keymap to {{ general.config.keymap }}
-  command: /usr/bin/localectl set-keymap {{ general.config.keymap }}
+- name: timezone | Set keymap to {{ general.config.keyboard.layout }}-{{ general.config.keyboard.variant }}
+  command: /usr/bin/localectl set-keymap {{ general.config.keyboard.layout }}-{{ general.config.keyboard.variant }}
 
 ### bash
 
