@@ -6,7 +6,6 @@
     - { role: elasticsearch, when: role.elasticsearch }
     - { role: freetds, when: role.freetds }
     - git
-    - { role: hhvm, when: phpversion == 'hhvm' }
     - { role: mariadb, when: role.mariadb }
     - { role: memcached, when: role.memcached }
     - { role: mongodb, when: role.mongodb }

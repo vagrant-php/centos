@@ -77,45 +77,6 @@ git:
 #            name: "'Firstname Lastname'"
 #            email: firstname.lastname@domain.tld
 
-hhvm:
-    config:
-        php:
-            short_open_tag: Off
-            safe_mode: Off
-            max_execution_time: 600
-            max_input_time: 600
-            memory_limit: 256M
-            error_reporting: E_ALL
-            display_errors: On
-            display_startup_errors: On
-            log_errors: On
-            error_log: /var/log/hhvm.err.log
-            post_max_size: 50M
-            magic_quotes_gpc: Off
-            magic_quotes_runtime: Off
-            default_charset: utf-8
-            cgi.fix_pathinfo: Off
-            upload_max_filesize: 50M
-            allow_url_fopen: On
-            allow_url_include: Off
-        date:
-            date.timezone: *timezone
-        intl:
-            intl.default_locale: *locale
-        mysql:
-            mysql.default_port: &mariadbport 3306
-            mysql.default_socket: &mariadbsocket /var/run/mysqld/mysqld.sock
-        mysqli:
-            mysqli.default_port: *mariadbport
-            mysqli.default_socket: *mariadbsocket
-        pdo_mysql:
-            pdo_mysql.default_socket: *mariadbsocket
-        hhvm:
-            hhvm.libxml.ext_entity_whitelist: file,http
-    server:
-        log: /var/log/hhvm-server.log
-        socket: &phpserversocket /var/run/php-fcgi.sock
-
 mariadb:
     username: root
     password: root
@@ -167,7 +128,7 @@ nginx:
         charset: utf-8
         error_log: /var/log/nginx/error.log
         fastcgi_read_timeout: 600
-        fastcgi_socket: *phpserversocket
+        fastcgi_socket: &phpserversocket /var/run/php-fcgi.sock
         proxy_buffer_size: 128k
         proxy_buffers: 4 256k
         proxy_busy_buffers_size: 256k
