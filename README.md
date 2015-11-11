@@ -1,7 +1,5 @@
 # vagrant-php/centos
 
-ATTENTION: this repository is far away from workiing atm, i will tweet about it, if its ready
-
 ## Features
 
  * centos 7
