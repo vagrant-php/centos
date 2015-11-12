@@ -1,5 +1,7 @@
 # vagrant-php/centos
 
+**DANGER** the box is not rebootable, watch this [issue][7] for more information.
+
 ## Features
 
  * centos 7
@@ -117,3 +119,5 @@ vagrant ssh
 [4]: https://www.vmware.com/products/workstation/features.html
 [5]: https://hashicorp.com
 [6]: https://www.vagrantup.com/vmware#buy-now
+
+[7]: https://github.com/boxcutter/centos/issues/30
