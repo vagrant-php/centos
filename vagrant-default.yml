@@ -84,6 +84,7 @@ general:
         keyboard:
             layout: ch
             variant: de_nodeadkeys
+        shell: bash
         timezone: &timezone Europe/Zurich
     packages:
         - gcc
