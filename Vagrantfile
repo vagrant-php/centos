@@ -58,7 +58,7 @@ Vagrant.configure(2) do |config|
 
     # Vagrant box
     # --------------------------------------------------------------------------
-    config.vm.box = 'boxcutter/centos71'
+    config.vm.box = 'boxcutter/centos72'
 
     # General settings
     # --------------------------------------------------------------------------
