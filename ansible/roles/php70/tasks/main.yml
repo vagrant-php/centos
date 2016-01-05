@@ -24,13 +24,13 @@
     - restart php70-php-fpm
   when: role.memcached
 
-#- name: install mongo
-#  yum: name={{ item }} state=present
-#  with_items:
-#    - php70-php-pecl-mongo
-#  notify:
-#    - restart php70-php-fpm
-#  when: role.mongodb
+- name: install mongodb
+  yum: name={{ item }} state=present
+  with_items:
+    - php70-php-pecl-mongodb
+  notify:
+    - restart php70-php-fpm
+  when: role.mongodb
 
 - name: install mysqlnd
   yum: name={{ item }} state=present
